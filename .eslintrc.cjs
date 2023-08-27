@@ -7,9 +7,12 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
-    'eslint-config-prettier-ts',
+    'airbnb',
+    'airbnb-typescript',
+    'airbnb/hooks',
+    'prettier',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
@@ -23,6 +26,8 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
   settings: {
     react: { version: 'detect' },
