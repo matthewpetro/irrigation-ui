@@ -2,46 +2,55 @@
     {
         "title": "Back plants",
         "startDate": "2023-09-02T19:40:00.000Z",
-        "endDate": "2023-09-02T20:21:00.000Z"
+        "endDate": "2023-09-02T20:21:00.000Z",
+        "deviceId": 769
     },
     {
         "title": "Front plants",
         "startDate": "2023-09-02T19:40:00.000Z",
-        "endDate": "2023-09-02T20:21:00.000Z"
+        "endDate": "2023-09-02T20:21:00.000Z",
+        "deviceId": 676
     },
     {
         "title": "Front trees",
         "startDate": "2023-09-03T12:35:00.000Z",
-        "endDate": "2023-09-03T15:05:00.000Z"
+        "endDate": "2023-09-03T15:05:00.000Z",
+        "deviceId": 675
     },
     {
         "title": "North lawn",
         "startDate": "2023-09-03T12:35:00.000Z",
-        "endDate": "2023-09-03T12:47:00.000Z"
+        "endDate": "2023-09-03T12:47:00.000Z",
+        "deviceId": 768
     },
     {
         "title": "North lawn",
         "startDate": "2023-09-03T14:00:00.000Z",
-        "endDate": "2023-09-03T14:00:00.000Z"
+        "endDate": "2023-09-03T14:00:00.000Z",
+        "deviceId": 768
     },
     {
         "title": "North lawn",
         "startDate": "2023-09-03T16:00:00.000Z",
-        "endDate": "2023-09-03T16:00:00.000Z"
+        "endDate": "2023-09-03T16:00:00.000Z",
+        "deviceId": 768
     },
     {
         "title": "South lawn",
         "startDate": "2023-09-03T12:47:00.000Z",
-        "endDate": "2023-09-03T12:59:00.000Z"
+        "endDate": "2023-09-03T12:59:00.000Z",
+        "deviceId": 767
     },
     {
         "title": "South lawn",
         "startDate": "2023-09-03T14:00:00.000Z",
-        "endDate": "2023-09-03T14:00:00.000Z"
+        "endDate": "2023-09-03T14:00:00.000Z",
+        "deviceId": 767
     },
     {
         "title": "South lawn",
         "startDate": "2023-09-03T16:00:00.000Z",
-        "endDate": "2023-09-03T16:00:00.000Z"
+        "endDate": "2023-09-03T16:00:00.000Z",
+        "deviceId": 767
     }
 ]

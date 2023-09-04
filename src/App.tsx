@@ -40,27 +40,27 @@ const getEndDate = (date: Date, viewName: string): Date => {
 
 const resources: Resource[] = [
   {
-    fieldName: 'title',
+    fieldName: 'deviceId',
     title: 'Lawn',
     instances: [
-      { id: 'North lawn', text: 'North lawn' },
-      { id: 'South lawn', text: 'South lawn' },
+      { id: 768, text: 'North lawn' },
+      { id: 767, text: 'South lawn' },
     ],
   },
   {
-    fieldName: 'title',
+    fieldName: 'deviceId',
     title: 'Front yard',
     instances: [
-      { id: 'Front plants', text: 'Front plants' },
-      { id: 'Front trees', text: 'Front trees' },
+      { id: 676, text: 'Front plants' },
+      { id: 675, text: 'Front trees' },
     ],
   },
   {
-    fieldName: 'title',
+    fieldName: 'deviceId',
     title: 'Back yard',
     instances: [
-      { id: 'Back plants', text: 'Back plants' },
-      { id: 'Back trees', text: 'Back trees' },
+      { id: 769, text: 'Back plants' },
+      { id: 677, text: 'Back trees' },
     ],
   },
 ]
