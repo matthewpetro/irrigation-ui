@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Paper } from '@mui/material'
 import useIrrigationEvents from './hooks/useIrrigationEvents'
-import { ViewState } from '@devexpress/dx-react-scheduler'
+import { Resource, ViewState } from '@devexpress/dx-react-scheduler'
 import {
   Scheduler,
   TodayButton,
@@ -11,6 +11,8 @@ import {
   WeekView,
   Appointments,
   ViewSwitcher,
+  AppointmentTooltip,
+  Resources,
 } from '@devexpress/dx-react-scheduler-material-ui'
 import { startOfWeek, endOfWeek, startOfDay, endOfDay } from 'date-fns'
 
@@ -36,17 +38,44 @@ const getEndDate = (date: Date, viewName: string): Date => {
   }
 }
 
+const resources: Resource[] = [
+  {
+    fieldName: 'title',
+    title: 'Lawn',
+    instances: [
+      { id: 'North lawn', text: 'North lawn' },
+      { id: 'South lawn', text: 'South lawn' },
+    ],
+  },
+  {
+    fieldName: 'title',
+    title: 'Front yard',
+    instances: [
+      { id: 'Front plants', text: 'Front plants' },
+      { id: 'Front trees', text: 'Front trees' },
+    ],
+  },
+  {
+    fieldName: 'title',
+    title: 'Back yard',
+    instances: [
+      { id: 'Back plants', text: 'Back plants' },
+      { id: 'Back trees', text: 'Back trees' },
+    ],
+  },
+]
+
 function App() {
   const [viewCurrentDate, setViewCurrentDate] = useState<Date>(new Date())
   const [currentViewName, setCurrentViewName] = useState<string>('Day')
-  const { data } = useIrrigationEvents(
+  const { data: irrigationEvents } = useIrrigationEvents(
     getStartDate(viewCurrentDate, currentViewName),
     getEndDate(viewCurrentDate, currentViewName)
   )
 
   return (
     <Paper>
-      <Scheduler height={800} data={data}>
+      <Scheduler height={800} data={irrigationEvents}>
         <ViewState
           currentDate={viewCurrentDate}
           onCurrentDateChange={setViewCurrentDate}
@@ -60,6 +89,8 @@ function App() {
         <DayView startDayHour={4} endDayHour={19} />
         <WeekView startDayHour={4} endDayHour={19} />
         <Appointments />
+        <AppointmentTooltip showCloseButton />
+        <Resources data={resources} />
       </Scheduler>
     </Paper>
   )
