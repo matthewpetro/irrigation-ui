@@ -1,38 +1,67 @@
-import axios from 'axios'
-import { useQuery } from '@tanstack/react-query'
-import { Container } from '@mui/material'
+import { useState } from 'react'
+import { Paper } from '@mui/material'
+import useIrrigationEvents from './hooks/useIrrigationEvents'
+import { ViewState } from '@devexpress/dx-react-scheduler'
+import {
+  Scheduler,
+  TodayButton,
+  Toolbar,
+  DateNavigator,
+  DayView,
+  WeekView,
+  Appointments,
+  ViewSwitcher,
+} from '@devexpress/dx-react-scheduler-material-ui'
+import { startOfWeek, endOfWeek, startOfDay, endOfDay } from 'date-fns'
 
-const DeviceState = {
-  ON: 'on',
-  OFF: 'off',
-} as const
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-type DeviceState = (typeof DeviceState)[keyof typeof DeviceState]
-
-type IrrigationEvent = {
-  timestamp: string
-  deviceName: string
-  deviceId: number
-  state: DeviceState
+const getStartDate = (date: Date, viewName: string): Date => {
+  switch (viewName) {
+    case 'Day':
+      return startOfDay(date)
+    case 'Week':
+      return startOfWeek(date)
+    default:
+      return date
+  }
 }
 
-const getIrrigationEvents = async () =>
-  axios.get<IrrigationEvent[]>(
-    'http://192.168.42.4:8080/irrigationEvents?startTimestamp=2023-08-23T00:00:00.000-07:00&endTimestamp=2023-08-27T23:00:00.000-07:00'
-  ).then((response) => response.data)
+const getEndDate = (date: Date, viewName: string): Date => {
+  switch (viewName) {
+    case 'Day':
+      return endOfDay(date)
+    case 'Week':
+      return endOfWeek(date)
+    default:
+      return date
+  }
+}
 
 function App() {
-  const query = useQuery({ queryKey: ['irrigationEvents'], queryFn: getIrrigationEvents})
+  const [viewCurrentDate, setViewCurrentDate] = useState<Date>(new Date())
+  const [currentViewName, setCurrentViewName] = useState<string>('Day')
+  const { data } = useIrrigationEvents(
+    getStartDate(viewCurrentDate, currentViewName),
+    getEndDate(viewCurrentDate, currentViewName)
+  )
 
   return (
-    <Container>
-      <ul>
-        {query.data?.map((event) => (
-          <li key={event.timestamp}>{JSON.stringify(event)}</li> 
-        ))}
-      </ul>
-    </Container>
+    <Paper>
+      <Scheduler height={800} data={data}>
+        <ViewState
+          currentDate={viewCurrentDate}
+          onCurrentDateChange={setViewCurrentDate}
+          currentViewName={currentViewName}
+          onCurrentViewNameChange={setCurrentViewName}
+        />
+        <Toolbar />
+        <DateNavigator />
+        <TodayButton />
+        <ViewSwitcher />
+        <DayView startDayHour={4} endDayHour={19} />
+        <WeekView startDayHour={4} endDayHour={19} />
+        <Appointments />
+      </Scheduler>
+    </Paper>
   )
 }
 
