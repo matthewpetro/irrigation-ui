@@ -4,16 +4,24 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@devexpress/dx-react-scheduler-material-ui@4.0.5':
+    hash: t52kyalh7jpi4natkkimzowema
+    path: patches/@devexpress__dx-react-scheduler-material-ui@4.0.5.patch
+  '@devexpress/dx-react-scheduler@4.0.5':
+    hash: he5ihak5zokf4subfulhqh2msy
+    path: patches/@devexpress__dx-react-scheduler@4.0.5.patch
+
 dependencies:
   '@devexpress/dx-react-core':
     specifier: ^4.0.5
     version: 4.0.5(react-dom@18.2.0)(react@18.2.0)
   '@devexpress/dx-react-scheduler':
     specifier: ^4.0.5
-    version: 4.0.5(@devexpress/dx-core@4.0.5)(@devexpress/dx-react-core@4.0.5)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0)
+    version: 4.0.5(patch_hash=he5ihak5zokf4subfulhqh2msy)(@devexpress/dx-core@4.0.5)(@devexpress/dx-react-core@4.0.5)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0)
   '@devexpress/dx-react-scheduler-material-ui':
     specifier: ^4.0.5
-    version: 4.0.5(@devexpress/dx-react-core@4.0.5)(@devexpress/dx-react-scheduler@4.0.5)(@devexpress/dx-scheduler-core@4.0.5)(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.6)(@mui/lab@5.0.0-alpha.141)(@mui/material@5.14.6)(@mui/x-date-pickers@5.0.20)(moment@2.29.4)(react@18.2.0)
+    version: 4.0.5(patch_hash=t52kyalh7jpi4natkkimzowema)(@devexpress/dx-react-core@4.0.5)(@devexpress/dx-react-scheduler@4.0.5)(@devexpress/dx-scheduler-core@4.0.5)(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.6)(@mui/lab@5.0.0-alpha.141)(@mui/material@5.14.6)(@mui/x-date-pickers@5.0.20)(moment@2.29.4)(react@18.2.0)
   '@emotion/react':
     specifier: ^11.11.1
     version: 11.11.1(@types/react@18.2.15)(react@18.2.0)
@@ -29,6 +37,9 @@ dependencies:
   axios:
     specifier: ^1.5.0
     version: 1.5.0
+  date-fns:
+    specifier: ^2.30.0
+    version: 2.30.0
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -150,7 +161,7 @@ packages:
     resolution: {integrity: sha512-+EQE8xZhRM/hsY0CDTVyayMDDY5ihc4MqXCrPxooKw19yAzUIC6uUqsZeaOFNL9YKTNxYKrJP5DFgE8o5xRCOw==}
     dev: false
 
-  /@date-io/date-fns@2.17.0:
+  /@date-io/date-fns@2.17.0(date-fns@2.30.0):
     resolution: {integrity: sha512-L0hWZ/mTpy3Gx/xXJ5tq5CzHo0L7ry6KEO9/w/JWiFWFLZgiNVo3ex92gOl3zmzjHqY/3Ev+5sehAr8UnGLEng==}
     peerDependencies:
       date-fns: ^2.0.0
@@ -159,6 +170,7 @@ packages:
         optional: true
     dependencies:
       '@date-io/core': 2.17.0
+      date-fns: 2.30.0
     dev: false
 
   /@date-io/dayjs@2.17.0:
@@ -220,7 +232,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@devexpress/dx-react-scheduler-material-ui@4.0.5(@devexpress/dx-react-core@4.0.5)(@devexpress/dx-react-scheduler@4.0.5)(@devexpress/dx-scheduler-core@4.0.5)(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.6)(@mui/lab@5.0.0-alpha.141)(@mui/material@5.14.6)(@mui/x-date-pickers@5.0.20)(moment@2.29.4)(react@18.2.0):
+  /@devexpress/dx-react-scheduler-material-ui@4.0.5(patch_hash=t52kyalh7jpi4natkkimzowema)(@devexpress/dx-react-core@4.0.5)(@devexpress/dx-react-scheduler@4.0.5)(@devexpress/dx-scheduler-core@4.0.5)(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.6)(@mui/lab@5.0.0-alpha.141)(@mui/material@5.14.6)(@mui/x-date-pickers@5.0.20)(moment@2.29.4)(react@18.2.0):
     resolution: {integrity: sha512-h1ogj2G99V3AhgXS+WIr6sndKvGNcdsRmlqHRlA1BVy2pNoK6lecHbJagrDF0GRHoDt3D68xWLuxDCmL/RlJUA==}
     peerDependencies:
       '@devexpress/dx-react-core': 4.0.5
@@ -237,21 +249,22 @@ packages:
     dependencies:
       '@date-io/moment': 1.3.13(moment@2.29.4)
       '@devexpress/dx-react-core': 4.0.5(react-dom@18.2.0)(react@18.2.0)
-      '@devexpress/dx-react-scheduler': 4.0.5(@devexpress/dx-core@4.0.5)(@devexpress/dx-react-core@4.0.5)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0)
+      '@devexpress/dx-react-scheduler': 4.0.5(patch_hash=he5ihak5zokf4subfulhqh2msy)(@devexpress/dx-core@4.0.5)(@devexpress/dx-react-core@4.0.5)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0)
       '@devexpress/dx-scheduler-core': 4.0.5(@devexpress/dx-core@4.0.5)
       '@emotion/react': 11.11.1(@types/react@18.2.15)(react@18.2.0)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.15)(react@18.2.0)
       '@mui/icons-material': 5.14.6(@mui/material@5.14.6)(@types/react@18.2.15)(react@18.2.0)
       '@mui/lab': 5.0.0-alpha.141(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.14.6)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
       '@mui/material': 5.14.6(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
-      '@mui/x-date-pickers': 5.0.20(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.14.6)(@mui/system@5.14.6)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0)
+      '@mui/x-date-pickers': 5.0.20(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.14.6)(@mui/system@5.14.6)(date-fns@2.30.0)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0)
       clsx: 1.2.1
       moment: 2.29.4
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
+    patched: true
 
-  /@devexpress/dx-react-scheduler@4.0.5(@devexpress/dx-core@4.0.5)(@devexpress/dx-react-core@4.0.5)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0):
+  /@devexpress/dx-react-scheduler@4.0.5(patch_hash=he5ihak5zokf4subfulhqh2msy)(@devexpress/dx-core@4.0.5)(@devexpress/dx-react-core@4.0.5)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-JllbcA0Mll+AKjIXr9Gn7Mm6DkWib7CbkUPZ6UPON28KjMGxxkQU65PCEa1VFIBqYBfYC1ulgjnj5jrxKLwKRg==}
     peerDependencies:
       '@devexpress/dx-core': 4.0.5
@@ -267,6 +280,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
+    patched: true
 
   /@devexpress/dx-scheduler-core@4.0.5(@devexpress/dx-core@4.0.5):
     resolution: {integrity: sha512-quMQcF9sAlGKJ+08QLmTzpWivB/pmuJtMvsz4pasM3HZOAw4gdDgmMerrxXYgbmDAp9YkH9Pxvs4iw5oAv7Bbw==}
@@ -887,7 +901,7 @@ packages:
       react-is: 18.2.0
     dev: false
 
-  /@mui/x-date-pickers@5.0.20(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.14.6)(@mui/system@5.14.6)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0):
+  /@mui/x-date-pickers@5.0.20(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.14.6)(@mui/system@5.14.6)(date-fns@2.30.0)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-ERukSeHIoNLbI1C2XRhF9wRhqfsr+Q4B1SAw2ZlU7CWgcG8UBOxgqRKDEOVAIoSWL+DWT6GRuQjOKvj6UXZceA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -917,7 +931,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.11
       '@date-io/core': 2.17.0
-      '@date-io/date-fns': 2.17.0
+      '@date-io/date-fns': 2.17.0(date-fns@2.30.0)
       '@date-io/dayjs': 2.17.0
       '@date-io/luxon': 2.17.0
       '@date-io/moment': 2.17.0(moment@2.29.4)
@@ -928,6 +942,7 @@ packages:
       '@mui/utils': 5.14.6(react@18.2.0)
       '@types/react-transition-group': 4.4.6
       clsx: 1.2.1
+      date-fns: 2.30.0
       moment: 2.29.4
       prop-types: 15.8.1
       react: 18.2.0
@@ -1586,6 +1601,13 @@ packages:
   /damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
     dev: true
+
+  /date-fns@2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.22.11
+    dev: false
 
   /debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
