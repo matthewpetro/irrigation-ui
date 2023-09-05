@@ -3,11 +3,15 @@ import { useQuery } from '@tanstack/react-query'
 import { AppointmentModel } from '@devexpress/dx-react-scheduler'
 // import mockEvents from '../mocks/mockEvents.json'
 
+export interface IrrigationEventAppointmentModel extends AppointmentModel {
+  deviceId: number
+}
+
 const getIrrigationEvents = async (startTimestamp: Date, endTimestamp: Date) => {
   // return Promise.resolve(mockEvents as AppointmentModel[])
   try {
     return axios
-      .get<AppointmentModel[]>(
+      .get<IrrigationEventAppointmentModel[]>(
         `http://192.168.42.4:8080/irrigationEvents?startTimestamp=${startTimestamp.toISOString()}&endTimestamp=${endTimestamp.toISOString()}`
       )
       .then((response) => response.data)
