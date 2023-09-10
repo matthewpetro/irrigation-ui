@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { AppointmentModel } from '@devexpress/dx-react-scheduler'
+import { isWithinInterval } from 'date-fns'
 // import mockEvents from '../mocks/mockEvents.json'
 
 export interface IrrigationEventAppointmentModel extends AppointmentModel {
@@ -22,9 +23,13 @@ const getIrrigationEvents = async (startTimestamp: Date, endTimestamp: Date) => 
 
 const useIrrigationEvents = (startTimestamp: Date, endTimestamp: Date) =>
   useQuery({
-    queryKey: ['irrigationEvents', startTimestamp, endTimestamp],
+    queryKey: ['irrigationEvents', { startTimestamp, endTimestamp }],
     queryFn: () => getIrrigationEvents(startTimestamp, endTimestamp),
     staleTime: Infinity,
+    refetchInterval: () =>
+      isWithinInterval(Date.now(), { start: startTimestamp, end: endTimestamp })
+        ? 5 * 60 * 1000
+        : false,
   })
 
 export default useIrrigationEvents
