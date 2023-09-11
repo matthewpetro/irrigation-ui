@@ -66,8 +66,8 @@ function App() {
   )
 
   return (
-    <Paper>
-      <Scheduler height={800} data={irrigationEvents}>
+    <Paper sx={{ height: '100vh' }}>
+      <Scheduler data={irrigationEvents}>
         <ViewState
           currentDate={viewCurrentDate}
           onCurrentDateChange={setViewCurrentDate}
@@ -78,8 +78,8 @@ function App() {
         <DateNavigator />
         <TodayButton />
         <ViewSwitcher />
-        <DayView startDayHour={4} endDayHour={19} />
-        <WeekView startDayHour={4} endDayHour={19} />
+        <DayView startDayHour={0} endDayHour={23} />
+        <WeekView startDayHour={0} endDayHour={23} />
         <Appointments />
         <AppointmentTooltip showCloseButton />
         <Resources data={resources} />
