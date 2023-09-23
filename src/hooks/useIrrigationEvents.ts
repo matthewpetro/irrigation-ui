@@ -1,4 +1,4 @@
-import axios from 'axios'
+import server from '../server'
 import { useQuery } from '@tanstack/react-query'
 import { AppointmentModel } from '@devexpress/dx-react-scheduler'
 import { isWithinInterval } from 'date-fns'
@@ -11,10 +11,13 @@ export interface IrrigationEventAppointmentModel extends AppointmentModel {
 const getIrrigationEvents = async (startTimestamp: Date, endTimestamp: Date) => {
   // return Promise.resolve(mockEvents as AppointmentModel[])
   try {
-    return axios
-      .get<IrrigationEventAppointmentModel[]>(
-        `${import.meta.env.VITE_SERVER_URL}/irrigationEvents?startTimestamp=${startTimestamp.toISOString()}&endTimestamp=${endTimestamp.toISOString()}`
-      )
+    return server
+      .get<IrrigationEventAppointmentModel[]>('/irrigationEvents', {
+        params: {
+          startTimestamp: startTimestamp.toISOString(),
+          endTimestamp: endTimestamp.toISOString(),
+        },
+      })
       .then((response) => response.data)
   } catch (error) {
     console.error(error)
