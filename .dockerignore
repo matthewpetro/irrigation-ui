@@ -1,0 +1,8 @@
+.devcontainer
+.github
+.vscode
+node_modules/
+pactches/
+dist/
+
+.env*
