@@ -19,6 +19,8 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui'
 import { startOfWeek, endOfWeek, startOfDay, endOfDay } from 'date-fns'
 
+const refreshIntervalMinutes = import.meta.env.VITE_REFRESH_INTERVAL_MINUTES as number
+
 const getStartDate = (date: Date, viewName: string): Date => {
   switch (viewName) {
     case 'Day':
@@ -60,10 +62,10 @@ const resources: Resource[] = [
 const AppointmentWithIcon = ({ children, data, ...restProps }: Appointments.AppointmentProps) => (
   <Appointments.Appointment data={data} {...restProps}>
     {data.warning && (
-      <WarningRoundedIcon fontSize="small" sx={{ color: 'grey.800', margin: '2px' }} />
+      <WarningRoundedIcon fontSize="small" sx={{ color: 'text.secondary', margin: '2px' }} />
     )}
     {data.currentlyOn && (
-      <WaterDropRoundedIcon fontSize="small" sx={{ color: 'grey.800', margin: '2px' }} />
+      <WaterDropRoundedIcon fontSize="small" sx={{ color: 'text.secondary', margin: '2px' }} />
     )}
     {children}
   </Appointments.Appointment>
@@ -82,7 +84,7 @@ const AppointmentTooltipWithIcon = ({
           <WarningRoundedIcon color="error" />
         </Grid>
         <Grid item xs={10}>
-          <Typography variant="inherit" sx={{ fontWeight: 'bold' }}>
+          <Typography variant="inherit" sx={{ color: 'text.secondary', fontWeight: 'bold' }}>
             {appointmentData.warning}
           </Typography>
         </Grid>
@@ -94,7 +96,7 @@ const AppointmentTooltipWithIcon = ({
           <WaterDropRoundedIcon color="success" />
         </Grid>
         <Grid item xs={10}>
-          <Typography variant="inherit" sx={{ fontWeight: 'bold' }}>
+          <Typography variant="inherit" sx={{ color: 'text.secondary', fontWeight: 'bold' }}>
             Device is currently on
           </Typography>
         </Grid>
@@ -129,7 +131,7 @@ function App() {
         <Appointments appointmentComponent={AppointmentWithIcon} />
         <AppointmentTooltip showCloseButton contentComponent={AppointmentTooltipWithIcon} />
         <Resources data={resources} />
-        <CurrentTimeIndicator updateInterval={5 * 60 * 1000} />
+        <CurrentTimeIndicator updateInterval={refreshIntervalMinutes * 60 * 1000} />
       </Scheduler>
     </Paper>
   )
