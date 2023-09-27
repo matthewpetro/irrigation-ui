@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Grid, Paper, Typography } from '@mui/material'
-import WarningIcon from '@mui/icons-material/Warning'
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded'
+import WaterDropRoundedIcon from '@mui/icons-material/WaterDropRounded'
 import useIrrigationEvents from './hooks/useIrrigationEvents'
 import { Resource, ViewState } from '@devexpress/dx-react-scheduler'
 import {
@@ -14,6 +15,7 @@ import {
   ViewSwitcher,
   AppointmentTooltip,
   Resources,
+  CurrentTimeIndicator,
 } from '@devexpress/dx-react-scheduler-material-ui'
 import { startOfWeek, endOfWeek, startOfDay, endOfDay } from 'date-fns'
 
@@ -55,14 +57,19 @@ const resources: Resource[] = [
   },
 ]
 
-const AppointmentWithWarning = ({ children, data, ...restProps }: Appointments.AppointmentProps) => (
+const AppointmentWithIcon = ({ children, data, ...restProps }: Appointments.AppointmentProps) => (
   <Appointments.Appointment data={data} {...restProps}>
-    {data.warning && <WarningIcon fontSize="small" sx={{ margin: '2px' }} />}
+    {data.warning && (
+      <WarningRoundedIcon fontSize="small" sx={{ color: 'grey.800', margin: '2px' }} />
+    )}
+    {data.currentlyOn && (
+      <WaterDropRoundedIcon fontSize="small" sx={{ color: 'grey.800', margin: '2px' }} />
+    )}
     {children}
   </Appointments.Appointment>
 )
 
-const AppointmentTooltipWithWarning = ({
+const AppointmentTooltipWithIcon = ({
   children,
   appointmentData,
   ...restProps
@@ -72,11 +79,23 @@ const AppointmentTooltipWithWarning = ({
     {appointmentData?.warning && (
       <Grid container paddingTop={1}>
         <Grid item xs={2} textAlign="center">
-          <WarningIcon color="error" />
+          <WarningRoundedIcon color="error" />
         </Grid>
         <Grid item xs={10}>
           <Typography variant="inherit" sx={{ fontWeight: 'bold' }}>
             {appointmentData.warning}
+          </Typography>
+        </Grid>
+      </Grid>
+    )}
+    {appointmentData?.currentlyOn && (
+      <Grid container paddingTop={1}>
+        <Grid item xs={2} textAlign="center">
+          <WaterDropRoundedIcon color="success" />
+        </Grid>
+        <Grid item xs={10}>
+          <Typography variant="inherit" sx={{ fontWeight: 'bold' }}>
+            Device is currently on
           </Typography>
         </Grid>
       </Grid>
@@ -107,9 +126,10 @@ function App() {
         <ViewSwitcher />
         <DayView startDayHour={0} endDayHour={23} />
         <WeekView startDayHour={0} endDayHour={23} />
-        <Appointments appointmentComponent={AppointmentWithWarning} />
-        <AppointmentTooltip showCloseButton contentComponent={AppointmentTooltipWithWarning} />
+        <Appointments appointmentComponent={AppointmentWithIcon} />
+        <AppointmentTooltip showCloseButton contentComponent={AppointmentTooltipWithIcon} />
         <Resources data={resources} />
+        <CurrentTimeIndicator updateInterval={5 * 60 * 1000} />
       </Scheduler>
     </Paper>
   )
