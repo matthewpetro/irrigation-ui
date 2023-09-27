@@ -1,7 +1,5 @@
 import { useState } from 'react'
-import { Grid, Paper, Typography } from '@mui/material'
-import WarningRoundedIcon from '@mui/icons-material/WarningRounded'
-import WaterDropRoundedIcon from '@mui/icons-material/WaterDropRounded'
+import { Paper } from '@mui/material'
 import useIrrigationEvents from './hooks/useIrrigationEvents'
 import { Resource, ViewState } from '@devexpress/dx-react-scheduler'
 import {
@@ -18,6 +16,8 @@ import {
   CurrentTimeIndicator,
 } from '@devexpress/dx-react-scheduler-material-ui'
 import { startOfWeek, endOfWeek, startOfDay, endOfDay } from 'date-fns'
+import AppointmentWithIcon from './components/AppointmentWithIcon'
+import AppointmentTooltipWithIcon from './components/AppointmentTooltipWithIcon'
 
 const refreshIntervalMinutes = import.meta.env.VITE_REFRESH_INTERVAL_MINUTES as number
 
@@ -59,54 +59,8 @@ const resources: Resource[] = [
   },
 ]
 
-const AppointmentWithIcon = ({ children, data, ...restProps }: Appointments.AppointmentProps) => (
-  <Appointments.Appointment data={data} {...restProps}>
-    {data.warning && (
-      <WarningRoundedIcon fontSize="small" sx={{ color: 'text.secondary', margin: '2px' }} />
-    )}
-    {data.currentlyOn && (
-      <WaterDropRoundedIcon fontSize="small" sx={{ color: 'text.secondary', margin: '2px' }} />
-    )}
-    {children}
-  </Appointments.Appointment>
-)
-
-const AppointmentTooltipWithIcon = ({
-  children,
-  appointmentData,
-  ...restProps
-}: AppointmentTooltip.ContentProps) => (
-  <AppointmentTooltip.Content appointmentData={appointmentData} {...restProps}>
-    {children}
-    {appointmentData?.warning && (
-      <Grid container paddingTop={1}>
-        <Grid item xs={2} textAlign="center">
-          <WarningRoundedIcon color="error" />
-        </Grid>
-        <Grid item xs={10}>
-          <Typography variant="inherit" sx={{ color: 'text.secondary', fontWeight: 'bold' }}>
-            {appointmentData.warning}
-          </Typography>
-        </Grid>
-      </Grid>
-    )}
-    {appointmentData?.currentlyOn && (
-      <Grid container paddingTop={1}>
-        <Grid item xs={2} textAlign="center">
-          <WaterDropRoundedIcon color="success" />
-        </Grid>
-        <Grid item xs={10}>
-          <Typography variant="inherit" sx={{ color: 'text.secondary', fontWeight: 'bold' }}>
-            Device is currently on
-          </Typography>
-        </Grid>
-      </Grid>
-    )}
-  </AppointmentTooltip.Content>
-)
-
 function App() {
-  const [viewCurrentDate, setViewCurrentDate] = useState<Date>(new Date())
+  const [viewCurrentDate, setViewCurrentDate] = useState<Date>(() => new Date())
   const [currentViewName, setCurrentViewName] = useState<string>('Week')
   const { data: irrigationEvents } = useIrrigationEvents(
     getStartDate(viewCurrentDate, currentViewName),
