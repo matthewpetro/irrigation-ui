@@ -6,6 +6,8 @@ import { isWithinInterval } from 'date-fns'
 
 export interface IrrigationEventAppointmentModel extends AppointmentModel {
   deviceId: number
+  warning?: string
+  currentlyOn?: boolean
 }
 
 const getIrrigationEvents = async (startTimestamp: Date, endTimestamp: Date) => {
