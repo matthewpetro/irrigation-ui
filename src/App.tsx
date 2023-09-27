@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import { Paper } from '@mui/material'
+import { Grid, Paper, Typography } from '@mui/material'
+import WarningIcon from '@mui/icons-material/Warning'
 import useIrrigationEvents from './hooks/useIrrigationEvents'
-import {
-  Resource,
-  ViewState,
-} from '@devexpress/dx-react-scheduler'
+import { Resource, ViewState } from '@devexpress/dx-react-scheduler'
 import {
   Scheduler,
   TodayButton,
@@ -47,7 +45,7 @@ const resources: Resource[] = [
     title: 'Zone',
     instances: [
       { id: 'North lawn', text: 'North lawn' },
-      { id: 'South lawn', text: 'South lawn'},
+      { id: 'South lawn', text: 'South lawn' },
       { id: 'Front plants', text: 'Front plants' },
       { id: 'Front trees', text: 'Front trees' },
       { id: 'Back plants', text: 'Back plants' },
@@ -56,6 +54,35 @@ const resources: Resource[] = [
     ],
   },
 ]
+
+const AppointmentWithWarning = ({ children, data, ...restProps }: Appointments.AppointmentProps) => (
+  <Appointments.Appointment data={data} {...restProps}>
+    {data.warning && <WarningIcon fontSize="small" sx={{ margin: '2px' }} />}
+    {children}
+  </Appointments.Appointment>
+)
+
+const AppointmentTooltipWithWarning = ({
+  children,
+  appointmentData,
+  ...restProps
+}: AppointmentTooltip.ContentProps) => (
+  <AppointmentTooltip.Content appointmentData={appointmentData} {...restProps}>
+    {children}
+    {appointmentData?.warning && (
+      <Grid container paddingTop={1}>
+        <Grid item xs={2} textAlign="center">
+          <WarningIcon color="error" />
+        </Grid>
+        <Grid item xs={10}>
+          <Typography variant="inherit" sx={{ fontWeight: 'bold' }}>
+            {appointmentData.warning}
+          </Typography>
+        </Grid>
+      </Grid>
+    )}
+  </AppointmentTooltip.Content>
+)
 
 function App() {
   const [viewCurrentDate, setViewCurrentDate] = useState<Date>(new Date())
@@ -80,8 +107,8 @@ function App() {
         <ViewSwitcher />
         <DayView startDayHour={0} endDayHour={23} />
         <WeekView startDayHour={0} endDayHour={23} />
-        <Appointments />
-        <AppointmentTooltip showCloseButton />
+        <Appointments appointmentComponent={AppointmentWithWarning} />
+        <AppointmentTooltip showCloseButton contentComponent={AppointmentTooltipWithWarning} />
         <Resources data={resources} />
       </Scheduler>
     </Paper>
