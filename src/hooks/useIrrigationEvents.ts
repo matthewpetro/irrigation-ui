@@ -4,6 +4,8 @@ import { AppointmentModel } from '@devexpress/dx-react-scheduler'
 import { isWithinInterval } from 'date-fns'
 // import mockEvents from '../mocks/mockEvents.json'
 
+const refreshIntervalMinutes = import.meta.env.VITE_REFRESH_INTERVAL_MINUTES as number
+
 export interface IrrigationEventAppointmentModel extends AppointmentModel {
   deviceId: number
   warning?: string
@@ -33,7 +35,7 @@ const useIrrigationEvents = (startTimestamp: Date, endTimestamp: Date) =>
     staleTime: Infinity,
     refetchInterval: () =>
       isWithinInterval(Date.now(), { start: startTimestamp, end: endTimestamp })
-        ? 5 * 60 * 1000
+        ? refreshIntervalMinutes * 60 * 1000
         : false,
   })
 
