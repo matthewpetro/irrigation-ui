@@ -11,3 +11,6 @@ RUN pnpm run build
 FROM nginx:stable-alpine AS production
 
 COPY --from=build /usr/build/dist /usr/share/nginx/html
+COPY --from=build /usr/build/default.conf /etc/nginx/conf.d
+
+EXPOSE 8080
