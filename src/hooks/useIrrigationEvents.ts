@@ -16,7 +16,7 @@ const getIrrigationEvents = async (startTimestamp: Date, endTimestamp: Date) => 
   // return Promise.resolve(mockEvents as AppointmentModel[])
   try {
     return server
-      .get<IrrigationEventAppointmentModel[]>('/irrigationEvents', {
+      .get<IrrigationEventAppointmentModel[]>('/irrigation-events', {
         params: {
           startTimestamp: startTimestamp.toISOString(),
           endTimestamp: endTimestamp.toISOString(),
