@@ -6,23 +6,37 @@ import { isWithinInterval } from 'date-fns'
 
 const refreshIntervalMinutes = import.meta.env.VITE_REFRESH_INTERVAL_MINUTES as number
 
-export interface IrrigationEventAppointmentModel extends AppointmentModel {
+interface IrrigationEventViewmodel {
+  startTimestamp: string
+  endTimestamp?: string
+  title: string
   deviceId: number
   warning?: string
   currentlyOn?: boolean
 }
 
+const viewmodelToAppointmentModel = (event: IrrigationEventViewmodel): AppointmentModel => (
+  {
+    startDate: event.startTimestamp,
+    endDate: event.endTimestamp,
+    title: event.title,
+    deviceId: event.deviceId,
+    warning: event.warning,
+    currentlyOn: event.currentlyOn,
+  }
+)
+
 const getIrrigationEvents = async (startTimestamp: Date, endTimestamp: Date) => {
-  // return Promise.resolve(mockEvents as AppointmentModel[])
+  // return Promise.resolve(mockEvents as IrrigationEventAppointmentModel[])
   try {
     return server
-      .get<IrrigationEventAppointmentModel[]>('/irrigation-events', {
+      .get<IrrigationEventViewmodel[]>('/irrigation-events', {
         params: {
           startTimestamp: startTimestamp.toISOString(),
           endTimestamp: endTimestamp.toISOString(),
         },
       })
-      .then((response) => response.data)
+      .then((response) => response.data.map(viewmodelToAppointmentModel))
   } catch (error) {
     console.error(error)
   }
