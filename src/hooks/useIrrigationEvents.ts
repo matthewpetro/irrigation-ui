@@ -1,6 +1,6 @@
 import server from '../server'
 import { useQuery } from '@tanstack/react-query'
-import  * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 dayjs.extend(isBetween)
 import mockEvents from '../mocks/mockEvents.json'

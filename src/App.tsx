@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import useIrrigationEvents from './hooks/useIrrigationEvents'
 import { IrrigationEventViewmodel } from './hooks/useIrrigationEvents'
 
