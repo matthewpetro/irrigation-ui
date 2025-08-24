@@ -1,12 +1,13 @@
 import server from '../server'
 import { useQuery } from '@tanstack/react-query'
-import { AppointmentModel } from '@devexpress/dx-react-scheduler'
-import { isWithinInterval } from 'date-fns'
-// import mockEvents from '../mocks/mockEvents.json'
+import  * as dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
+dayjs.extend(isBetween)
+import mockEvents from '../mocks/mockEvents.json'
 
 const refreshIntervalMinutes = import.meta.env.VITE_REFRESH_INTERVAL_MINUTES as number
 
-interface IrrigationEventViewmodel {
+export interface IrrigationEventViewmodel {
   startTimestamp: string
   endTimestamp?: string
   title: string
@@ -15,40 +16,29 @@ interface IrrigationEventViewmodel {
   currentlyOn?: boolean
 }
 
-const viewmodelToAppointmentModel = (event: IrrigationEventViewmodel): AppointmentModel => (
-  {
-    startDate: event.startTimestamp,
-    endDate: event.endTimestamp,
-    title: event.title,
-    deviceId: event.deviceId,
-    warning: event.warning,
-    currentlyOn: event.currentlyOn,
-  }
-)
-
-const getIrrigationEvents = async (startTimestamp: Date, endTimestamp: Date) => {
-  // return Promise.resolve(mockEvents as IrrigationEventAppointmentModel[])
-  try {
-    return server
-      .get<IrrigationEventViewmodel[]>('/irrigation-events', {
-        params: {
-          startTimestamp: startTimestamp.toISOString(),
-          endTimestamp: endTimestamp.toISOString(),
-        },
-      })
-      .then((response) => response.data.map(viewmodelToAppointmentModel))
-  } catch (error) {
-    console.error(error)
-  }
+const getIrrigationEvents = async (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs) => {
+  return Promise.resolve(mockEvents as IrrigationEventViewmodel[])
+  // try {
+  //   return server
+  //     .get<IrrigationEventViewmodel[]>('/irrigation-events', {
+  //       params: {
+  //         startTimestamp: startTimestamp.toISOString(),
+  //         endTimestamp: endTimestamp.toISOString(),
+  //       },
+  //     })
+  //     .then((response) => response.data)
+  // } catch (error) {
+  //   console.error(error)
+  // }
 }
 
-const useIrrigationEvents = (startTimestamp: Date, endTimestamp: Date) =>
+const useIrrigationEvents = (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs) =>
   useQuery({
     queryKey: ['irrigationEvents', { startTimestamp, endTimestamp }],
     queryFn: () => getIrrigationEvents(startTimestamp, endTimestamp),
     staleTime: Infinity,
     refetchInterval: () =>
-      isWithinInterval(Date.now(), { start: startTimestamp, end: endTimestamp })
+      dayjs().isBetween(startTimestamp, endTimestamp, 'second', '[]')
         ? refreshIntervalMinutes * 60 * 1000
         : false,
   })
