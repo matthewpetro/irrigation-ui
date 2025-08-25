@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 dayjs.extend(isBetween)
-import mockEvents from '../mocks/mockEvents.json'
+// import mockEvents from '../mocks/mockEvents.json'
 
 const refreshIntervalMinutes = import.meta.env.VITE_REFRESH_INTERVAL_MINUTES as number
 
@@ -17,19 +17,19 @@ export interface IrrigationEventViewmodel {
 }
 
 const getIrrigationEvents = async (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs) => {
-  return Promise.resolve(mockEvents as IrrigationEventViewmodel[])
-  // try {
-  //   return server
-  //     .get<IrrigationEventViewmodel[]>('/irrigation-events', {
-  //       params: {
-  //         startTimestamp: startTimestamp.toISOString(),
-  //         endTimestamp: endTimestamp.toISOString(),
-  //       },
-  //     })
-  //     .then((response) => response.data)
-  // } catch (error) {
-  //   console.error(error)
-  // }
+  // return Promise.resolve(mockEvents as IrrigationEventViewmodel[])
+  try {
+    return server
+      .get<IrrigationEventViewmodel[]>('/irrigation-events', {
+        params: {
+          startTimestamp: startTimestamp.toISOString(),
+          endTimestamp: endTimestamp.toISOString(),
+        },
+      })
+      .then((response) => response.data)
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const useIrrigationEvents = (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs) =>
