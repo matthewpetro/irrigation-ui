@@ -5,7 +5,7 @@ import isBetween from 'dayjs/plugin/isBetween'
 dayjs.extend(isBetween)
 import mockEvents from '../mocks/mockEvents.json'
 
-const refreshIntervalMinutes = import.meta.env.VITE_REFRESH_INTERVAL_MINUTES as number
+const refreshIntervalMinutes = Number(import.meta.env.VITE_REFRESH_INTERVAL_MINUTES) || 5
 
 export interface IrrigationEventViewmodel {
   startTimestamp?: string
