@@ -8,7 +8,7 @@ import mockEvents from '../mocks/mockEvents.json'
 const refreshIntervalMinutes = import.meta.env.VITE_REFRESH_INTERVAL_MINUTES as number
 
 export interface IrrigationEventViewmodel {
-  startTimestamp: string
+  startTimestamp?: string
   endTimestamp?: string
   title: string
   deviceId: number
