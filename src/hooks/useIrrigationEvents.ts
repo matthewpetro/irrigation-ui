@@ -34,7 +34,7 @@ const getIrrigationEvents = async (startTimestamp: dayjs.Dayjs, endTimestamp: da
 
 const useIrrigationEvents = (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs) =>
   useQuery({
-    queryKey: ['irrigationEvents', { startTimestamp, endTimestamp }],
+    queryKey: ['irrigationEvents', { startTimestamp: startTimestamp.toISOString(), endTimestamp: endTimestamp.toISOString() }],
     queryFn: () => getIrrigationEvents(startTimestamp, endTimestamp),
     staleTime: Infinity,
     refetchInterval: () =>
