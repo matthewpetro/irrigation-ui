@@ -6,7 +6,8 @@ import type { CalendarEvent } from '@schedule-x/calendar'
 import { createCurrentTimePlugin } from '@schedule-x/current-time'
 import 'temporal-polyfill/global'
 import '@schedule-x/theme-default/dist/index.css'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
+import { createEventsServicePlugin } from '@schedule-x/events-service'
 
 const unknownTimestampEventDurationMinutes = 30
 
@@ -34,35 +35,44 @@ const irrigationEventsToCalendarEvents = (
 }
 
 const generateEventId = (event: IrrigationEventViewmodel): string => {
-  return `${event.deviceId}-${event.startTimestamp ?? event.endTimestamp}`
+  const timestamp = Temporal.Instant.from(
+    event.startTimestamp ?? event.endTimestamp!
+  ).epochMilliseconds
+  return `${event.deviceId}-${timestamp}`
 }
 
 function App() {
-  const { data: events = [] } = useIrrigationEvents(dayjs().startOf('day'), dayjs().endOf('day'))
-  const calendarEvents = useMemo(() => irrigationEventsToCalendarEvents(events), [events])
-
+  const eventsServicePlugin = useMemo(() => createEventsServicePlugin(), [])
   const calendar = useCalendarApp({
     views: [createViewDay(), createViewWeek()],
-    // events: calendarEvents,
-    events: [
-      {
-        id: '1',
-        title: 'Event 1',
-        start: Temporal.ZonedDateTime.from('2025-10-17T08:00:00-07:00[America/Phoenix]'),
-        end: Temporal.ZonedDateTime.from('2025-10-17T13:00:00-07:00[America/Phoenix]'),
-        deviceId: 1,
-      },
-      {
-        id: '2',
-        title: 'Event 2',
-        start: Temporal.ZonedDateTime.from('2025-10-18T08:00:00-07:00[America/Phoenix]'),
-        end: Temporal.ZonedDateTime.from('2025-10-18T13:00:00-07:00[America/Phoenix]'),
-        deviceId: 2,
-      },
-    ],
+    events: [],
+    // events: [
+    //   {
+    //     id: '1',
+    //     title: 'Event 1',
+    //     start: Temporal.ZonedDateTime.from('2025-12-29T08:00:00-07:00[America/Phoenix]'),
+    //     end: Temporal.ZonedDateTime.from('2025-12-29T13:00:00-07:00[America/Phoenix]'),
+    //     deviceId: 1,
+    //   },
+    //   {
+    //     id: '2',
+    //     title: 'Event 2',
+    //     start: Temporal.ZonedDateTime.from('2025-12-29T14:00:00-07:00[America/Phoenix]'),
+    //     end: Temporal.ZonedDateTime.from('2025-12-29T14:30:00-07:00[America/Phoenix]'),
+    //     deviceId: 2,
+    //   },
+    // ],
     timezone: 'America/Phoenix',
-    plugins: [createCurrentTimePlugin()],
+    plugins: [createCurrentTimePlugin(), eventsServicePlugin],
   })
+
+  const { data: irrigationEvents = [] } = useIrrigationEvents(
+    dayjs().startOf('day'),
+    dayjs().endOf('day')
+  )
+  useEffect(() => {
+    eventsServicePlugin.set(irrigationEventsToCalendarEvents(irrigationEvents))
+  }, [irrigationEvents, eventsServicePlugin])
 
   return (
     <div>
