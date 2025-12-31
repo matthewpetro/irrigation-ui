@@ -1,9 +1,9 @@
-// import server from '../server'
+import server from '../server'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 dayjs.extend(isBetween)
-import mockEvents from '../mocks/mockEvents.json'
+// import mockEvents from '../mocks/mockEvents.json'
 
 const refreshIntervalMinutes = Number(import.meta.env.VITE_REFRESH_INTERVAL_MINUTES) || 5
 
@@ -16,25 +16,31 @@ export interface IrrigationEventViewmodel {
   currentlyOn?: boolean
 }
 
-const getIrrigationEvents = async (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs) => {
-  return Promise.resolve(mockEvents as IrrigationEventViewmodel[])
-  // try {
-  //   return server
-  //     .get<IrrigationEventViewmodel[]>('/irrigation-events', {
-  //       params: {
-  //         startTimestamp: startTimestamp.toISOString(),
-  //         endTimestamp: endTimestamp.toISOString(),
-  //       },
-  //     })
-  //     .then((response) => response.data)
-  // } catch (error) {
-  //   console.error(error)
-  // }
+const getIrrigationEvents = async (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs): Promise<IrrigationEventViewmodel[]> => {
+  // return Promise.resolve(mockEvents as IrrigationEventViewmodel[])
+  try {
+    const result = await server
+      .get<IrrigationEventViewmodel[]>('/irrigation-events', {
+        params: {
+          startTimestamp: startTimestamp.toISOString(),
+          endTimestamp: endTimestamp.toISOString(),
+        },
+      })
+    return result.data ?? []
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
 }
 
 const useIrrigationEvents = (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs) =>
   useQuery({
-    queryKey: ['irrigationEvents', { startTimestamp: startTimestamp.toISOString(), endTimestamp: endTimestamp.toISOString() }],
+    queryKey: [
+      'irrigationEvents',
+      { startTimestamp: startTimestamp.toISOString(), endTimestamp: endTimestamp.toISOString() },
+      startTimestamp,
+      endTimestamp,
+    ],
     queryFn: () => getIrrigationEvents(startTimestamp, endTimestamp),
     staleTime: Infinity,
     refetchInterval: () =>

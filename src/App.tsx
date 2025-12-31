@@ -8,37 +8,36 @@ import 'temporal-polyfill/global'
 import '@schedule-x/theme-default/dist/index.css'
 import { useEffect, useMemo } from 'react'
 import { createEventsServicePlugin } from '@schedule-x/events-service'
+import { createEventModalPlugin } from '@schedule-x/event-modal'
 
 const unknownTimestampEventDurationMinutes = 30
 
 const irrigationEventsToCalendarEvents = (
   irrigationEvents: IrrigationEventViewmodel[]
 ): CalendarEvent[] => {
-  return irrigationEvents.map((event) => ({
-    id: generateEventId(event),
-    title: event.title,
+  return irrigationEvents.map((event) => {
     // If we don't have a start timestamp, use the end timestamp minus the default event duration
-    start: event.startTimestamp
+    const startTimestamp = event.startTimestamp
       ? Temporal.Instant.from(event.startTimestamp).toZonedDateTimeISO('America/Phoenix')
       : Temporal.Instant.from(event.endTimestamp!)
           .subtract({ minutes: unknownTimestampEventDurationMinutes })
-          .toZonedDateTimeISO('America/Phoenix'),
+          .toZonedDateTimeISO('America/Phoenix')
     // If we don't have an end timestamp, use the start timestamp plus the default event duration
-    end: event.endTimestamp
+    const endTimestamp = event.endTimestamp
       ? Temporal.Instant.from(event.endTimestamp).toZonedDateTimeISO('America/Phoenix')
       : Temporal.Instant.from(event.startTimestamp!)
           .add({ minutes: unknownTimestampEventDurationMinutes })
-          .toZonedDateTimeISO('America/Phoenix'),
-    deviceId: event.deviceId,
-    warning: event.warning,
-  }))
-}
-
-const generateEventId = (event: IrrigationEventViewmodel): string => {
-  const timestamp = Temporal.Instant.from(
-    event.startTimestamp ?? event.endTimestamp!
-  ).epochMilliseconds
-  return `${event.deviceId}-${timestamp}`
+          .toZonedDateTimeISO('America/Phoenix')
+    return {
+      // The device ID concatened with the start time will always be unique
+      id: `${event.deviceId}-${startTimestamp.epochMilliseconds}`,
+      title: event.title,
+      start: startTimestamp,
+      end: endTimestamp,
+      deviceId: event.deviceId,
+      warning: event.warning,
+    }
+  })
 }
 
 function App() {
@@ -63,7 +62,10 @@ function App() {
     //   },
     // ],
     timezone: 'America/Phoenix',
-    plugins: [createCurrentTimePlugin(), eventsServicePlugin],
+    plugins: [createCurrentTimePlugin(), eventsServicePlugin, createEventModalPlugin()],
+    weekOptions: {
+      gridHeight: 3500,
+    },
   })
 
   const { data: irrigationEvents = [] } = useIrrigationEvents(
