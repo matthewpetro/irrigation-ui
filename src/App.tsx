@@ -1,93 +1,85 @@
-import { useState } from 'react'
-import { Paper } from '@mui/material'
-import useIrrigationEvents from './hooks/useIrrigationEvents'
-import { Resource, ViewState } from '@devexpress/dx-react-scheduler'
-import {
-  Scheduler,
-  TodayButton,
-  Toolbar,
-  DateNavigator,
-  DayView,
-  WeekView,
-  Appointments,
-  ViewSwitcher,
-  AppointmentTooltip,
-  Resources,
-  CurrentTimeIndicator,
-} from '@devexpress/dx-react-scheduler-material-ui'
-import { startOfWeek, endOfWeek, startOfDay, endOfDay } from 'date-fns'
-import AppointmentWithIcon from './components/AppointmentWithIcon'
-import AppointmentTooltipWithIcon from './components/AppointmentTooltipWithIcon'
+import dayjs from 'dayjs'
+import useIrrigationEvents, { IrrigationEventViewmodel } from './hooks/useIrrigationEvents'
+import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react'
+import { createViewDay, createViewWeek } from '@schedule-x/calendar'
+import type { CalendarEvent } from '@schedule-x/calendar'
+import { createCurrentTimePlugin } from '@schedule-x/current-time'
+import 'temporal-polyfill/global'
+import '@schedule-x/theme-default/dist/index.css'
+import { useEffect, useMemo } from 'react'
+import { createEventsServicePlugin } from '@schedule-x/events-service'
+import { createEventModalPlugin } from '@schedule-x/event-modal'
 
-const refreshIntervalMinutes = import.meta.env.VITE_REFRESH_INTERVAL_MINUTES as number
+const unknownTimestampEventDurationMinutes = 30
 
-const getStartDate = (date: Date, viewName: string): Date => {
-  switch (viewName) {
-    case 'Day':
-      return startOfDay(date)
-    case 'Week':
-      return startOfWeek(date)
-    default:
-      return date
-  }
+const irrigationEventsToCalendarEvents = (
+  irrigationEvents: IrrigationEventViewmodel[]
+): CalendarEvent[] => {
+  return irrigationEvents.map((event) => {
+    // If we don't have a start timestamp, use the end timestamp minus the default event duration
+    const startTimestamp = event.startTimestamp
+      ? Temporal.Instant.from(event.startTimestamp).toZonedDateTimeISO('America/Phoenix')
+      : Temporal.Instant.from(event.endTimestamp!)
+          .subtract({ minutes: unknownTimestampEventDurationMinutes })
+          .toZonedDateTimeISO('America/Phoenix')
+    // If we don't have an end timestamp, use the start timestamp plus the default event duration
+    const endTimestamp = event.endTimestamp
+      ? Temporal.Instant.from(event.endTimestamp).toZonedDateTimeISO('America/Phoenix')
+      : Temporal.Instant.from(event.startTimestamp!)
+          .add({ minutes: unknownTimestampEventDurationMinutes })
+          .toZonedDateTimeISO('America/Phoenix')
+    return {
+      // The device ID concatened with the start time will always be unique
+      id: `${event.deviceId}-${startTimestamp.epochMilliseconds}`,
+      title: event.title,
+      start: startTimestamp,
+      end: endTimestamp,
+      deviceId: event.deviceId,
+      warning: event.warning,
+    }
+  })
 }
-
-const getEndDate = (date: Date, viewName: string): Date => {
-  switch (viewName) {
-    case 'Day':
-      return endOfDay(date)
-    case 'Week':
-      return endOfWeek(date)
-    default:
-      return date
-  }
-}
-
-const resources: Resource[] = [
-  {
-    fieldName: 'title',
-    title: 'Zone',
-    instances: [
-      { id: 'North lawn', text: 'North lawn' },
-      { id: 'South lawn', text: 'South lawn' },
-      { id: 'Front plants', text: 'Front plants' },
-      { id: 'Front trees', text: 'Front trees' },
-      { id: 'Back plants', text: 'Back plants' },
-      { id: 'Back trees', text: 'Back trees' },
-      { id: 'Tangelo tree', text: 'Tangelo tree' },
-    ],
-  },
-]
 
 function App() {
-  const [viewCurrentDate, setViewCurrentDate] = useState<Date>(() => new Date())
-  const [currentViewName, setCurrentViewName] = useState<string>('Week')
-  const { data: irrigationEvents } = useIrrigationEvents(
-    getStartDate(viewCurrentDate, currentViewName),
-    getEndDate(viewCurrentDate, currentViewName)
+  const eventsServicePlugin = useMemo(() => createEventsServicePlugin(), [])
+  const calendar = useCalendarApp({
+    views: [createViewDay(), createViewWeek()],
+    events: [],
+    // events: [
+    //   {
+    //     id: '1',
+    //     title: 'Event 1',
+    //     start: Temporal.ZonedDateTime.from('2025-12-29T08:00:00-07:00[America/Phoenix]'),
+    //     end: Temporal.ZonedDateTime.from('2025-12-29T13:00:00-07:00[America/Phoenix]'),
+    //     deviceId: 1,
+    //   },
+    //   {
+    //     id: '2',
+    //     title: 'Event 2',
+    //     start: Temporal.ZonedDateTime.from('2025-12-29T14:00:00-07:00[America/Phoenix]'),
+    //     end: Temporal.ZonedDateTime.from('2025-12-29T14:30:00-07:00[America/Phoenix]'),
+    //     deviceId: 2,
+    //   },
+    // ],
+    timezone: 'America/Phoenix',
+    plugins: [createCurrentTimePlugin(), eventsServicePlugin, createEventModalPlugin()],
+    weekOptions: {
+      gridHeight: 3500,
+    },
+  })
+
+  const { data: irrigationEvents = [] } = useIrrigationEvents(
+    dayjs().startOf('day'),
+    dayjs().endOf('day')
   )
+  useEffect(() => {
+    eventsServicePlugin.set(irrigationEventsToCalendarEvents(irrigationEvents))
+  }, [irrigationEvents, eventsServicePlugin])
 
   return (
-    <Paper sx={{ height: '100vh' }}>
-      <Scheduler data={irrigationEvents}>
-        <ViewState
-          currentDate={viewCurrentDate}
-          onCurrentDateChange={setViewCurrentDate}
-          currentViewName={currentViewName}
-          onCurrentViewNameChange={setCurrentViewName}
-        />
-        <Toolbar />
-        <DateNavigator />
-        <TodayButton />
-        <ViewSwitcher />
-        <DayView startDayHour={0} endDayHour={23} />
-        <WeekView startDayHour={0} endDayHour={23} />
-        <Appointments appointmentComponent={AppointmentWithIcon} />
-        <AppointmentTooltip showCloseButton contentComponent={AppointmentTooltipWithIcon} />
-        <Resources data={resources} />
-        <CurrentTimeIndicator updateInterval={refreshIntervalMinutes * 60 * 1000} />
-      </Scheduler>
-    </Paper>
+    <div>
+      <ScheduleXCalendar calendarApp={calendar} />
+    </div>
   )
 }
 
