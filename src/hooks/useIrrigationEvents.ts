@@ -16,16 +16,18 @@ export interface IrrigationEventViewmodel {
   currentlyOn?: boolean
 }
 
-const getIrrigationEvents = async (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs): Promise<IrrigationEventViewmodel[]> => {
+const getIrrigationEvents = async (
+  startTimestamp: dayjs.Dayjs,
+  endTimestamp: dayjs.Dayjs
+): Promise<IrrigationEventViewmodel[]> => {
   // return Promise.resolve(mockEvents as IrrigationEventViewmodel[])
   try {
-    const result = await server
-      .get<IrrigationEventViewmodel[]>('/irrigation-events', {
-        params: {
-          startTimestamp: startTimestamp.toISOString(),
-          endTimestamp: endTimestamp.toISOString(),
-        },
-      })
+    const result = await server.get<IrrigationEventViewmodel[]>('/irrigation-events', {
+      params: {
+        startTimestamp: startTimestamp.toISOString(),
+        endTimestamp: endTimestamp.toISOString(),
+      },
+    })
     return result.data ?? []
   } catch (error) {
     console.error(error)
@@ -35,12 +37,7 @@ const getIrrigationEvents = async (startTimestamp: dayjs.Dayjs, endTimestamp: da
 
 const useIrrigationEvents = (startTimestamp: dayjs.Dayjs, endTimestamp: dayjs.Dayjs) =>
   useQuery({
-    queryKey: [
-      'irrigationEvents',
-      { startTimestamp: startTimestamp.toISOString(), endTimestamp: endTimestamp.toISOString() },
-      startTimestamp,
-      endTimestamp,
-    ],
+    queryKey: ['irrigationEvents', { startTimestamp, endTimestamp }],
     queryFn: () => getIrrigationEvents(startTimestamp, endTimestamp),
     staleTime: Infinity,
     refetchInterval: () =>
