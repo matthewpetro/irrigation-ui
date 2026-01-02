@@ -1,4 +1,4 @@
-import server from '../server'
+import server from './server'
 // import mockEvents from '../mocks/mockEvents.json'
 
 export interface IrrigationEventViewmodel {
