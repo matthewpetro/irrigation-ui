@@ -1,4 +1,4 @@
-import getIrrigationEvents, { IrrigationEventViewmodel } from './hooks/useIrrigationEvents'
+import getIrrigationEvents, { IrrigationEventViewmodel } from './getIrrigationEvents'
 import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react'
 import { createViewDay, createViewWeek } from '@schedule-x/calendar'
 import type { CalendarEvent, CalendarConfig } from '@schedule-x/calendar'
