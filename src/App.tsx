@@ -128,6 +128,7 @@ const calendarControlsPlugin = createCalendarControlsPlugin()
 
 const calendarConfig: CalendarConfig = {
   isDark: false,
+  isResponsive: false,
   calendars,
   views: [createViewDay(), createViewWeek()],
   timezone: 'America/Phoenix',
@@ -146,9 +147,9 @@ const calendarConfig: CalendarConfig = {
     start: '06:00',
     end: '20:00'
   },
-  // weekOptions: {
-  //   gridHeight: 2500,
-  // },
+  weekOptions: {
+    nDays: 5,
+  },
   callbacks: {
     fetchEvents: async (range) => {
       try {
