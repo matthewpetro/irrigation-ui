@@ -1,4 +1,5 @@
 import server from './server'
+import { formatISO } from 'date-fns'
 // import mockEvents from '../mocks/mockEvents.json'
 
 export interface IrrigationEventViewmodel {
@@ -11,15 +12,15 @@ export interface IrrigationEventViewmodel {
 }
 
 export default async (
-  startTimestamp: Temporal.Instant,
-  endTimestamp: Temporal.Instant
+  startTimestamp: Date,
+  endTimestamp: Date
 ): Promise<IrrigationEventViewmodel[]> => {
   // return Promise.resolve(mockEvents as IrrigationEventViewmodel[])
   try {
     const result = await server.get<IrrigationEventViewmodel[]>('/irrigation-events', {
       params: {
-        startTimestamp: startTimestamp.toString(),
-        endTimestamp: endTimestamp.toString(),
+        startTimestamp: formatISO(startTimestamp),
+        endTimestamp: formatISO(endTimestamp),
       },
     })
     return result.data ?? []
