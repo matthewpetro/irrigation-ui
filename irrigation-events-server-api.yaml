@@ -1,0 +1,383 @@
+openapi: 3.0.0
+paths:
+  /:
+    get:
+      operationId: AppController_getOk
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - App
+  /irrigation-events:
+    post:
+      operationId: IrrigationEventsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MakerApiWrapperDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+        - IrrigationEvents
+    get:
+      operationId: IrrigationEventsController_get
+      parameters:
+        - name: startTimestamp
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: endTimestamp
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IrrigationEventViewmodelDto'
+      tags:
+        - IrrigationEvents
+  /sunrise-sunset:
+    get:
+      operationId: SunriseSunsetController_get
+      parameters:
+        - name: startDate
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: endDate
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - SunriseSunset
+  /sunrise-sunset/one:
+    get:
+      operationId: SunriseSunsetController_getOne
+      parameters:
+        - name: date
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SunriseSunset
+  /irrigation-programs:
+    post:
+      operationId: IrrigationProgramsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateIrrigationProgramDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IrrigationProgramDto'
+      tags:
+        - IrrigationPrograms
+    get:
+      operationId: IrrigationProgramsController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IrrigationProgramDto'
+      tags:
+        - IrrigationPrograms
+  '/irrigation-programs/{id}':
+    get:
+      operationId: IrrigationProgramsController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IrrigationProgramDto'
+      tags:
+        - IrrigationPrograms
+    patch:
+      operationId: IrrigationProgramsController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIrrigationProgramDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IrrigationProgramDto'
+      tags:
+        - IrrigationPrograms
+    delete:
+      operationId: IrrigationProgramsController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - IrrigationPrograms
+  /rain-delay:
+    get:
+      operationId: RainDelayController_get
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RainDelayDto'
+      tags:
+        - RainDelay
+    patch:
+      operationId: RainDelayController_update
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RainDelayDto'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - RainDelay
+info:
+  title: Irrigation Events API
+  description: API to manage irrigation events and programs
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    MakerApiEventDto:
+      type: object
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+        deviceId:
+          type: number
+        value:
+          type: string
+          enum:
+            - 'on'
+            - 'off'
+      required:
+        - name
+        - displayName
+        - deviceId
+        - value
+    MakerApiWrapperDto:
+      type: object
+      properties:
+        content:
+          $ref: '#/components/schemas/MakerApiEventDto'
+      required:
+        - content
+    IrrigationEventViewmodelDto:
+      type: object
+      properties:
+        startTimestamp:
+          type: string
+          format: date-time
+        endTimestamp:
+          type: string
+          format: date-time
+        title:
+          type: string
+        deviceId:
+          type: number
+          minimum: 1
+        warning:
+          type: string
+          enum:
+            - The ON event is missing. The time shown is the OFF time.
+            - The OFF event is missing. The time shown is the ON time.
+            - >-
+              The OFF event is missing and the current device state cannot be
+              determined.
+        currentlyOn:
+          type: boolean
+      required:
+        - title
+        - deviceId
+    CreateIrrigationProgramDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        duration:
+          type: number
+          minimum: 1
+        wateringPeriod:
+          type: number
+          minimum: 1
+        startTimes:
+          type: array
+          items:
+            type: string
+            pattern: >-
+              /^(?:[01]\d|2[0-3]):(?:[0-5]\d)$|^(?:sunset|sunrise)(?:[+-]?\d+)?$/
+        deviceIds:
+          type: array
+          items:
+            type: number
+            minimum: 1
+        simultaneousIrrigation:
+          type: boolean
+        nextRunDate:
+          type: string
+          nullable: true
+          pattern: '/^\d{4}-\d{2}-\d{2}$/'
+      required:
+        - name
+        - duration
+        - wateringPeriod
+        - startTimes
+        - deviceIds
+        - simultaneousIrrigation
+    IrrigationProgramDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        duration:
+          type: number
+          minimum: 1
+        wateringPeriod:
+          type: number
+          minimum: 1
+        startTimes:
+          type: array
+          items:
+            type: string
+            pattern: >-
+              /^(?:[01]\d|2[0-3]):(?:[0-5]\d)$|^(?:sunset|sunrise)(?:[+-]?\d+)?$/
+        deviceIds:
+          type: array
+          items:
+            type: number
+            minimum: 1
+        simultaneousIrrigation:
+          type: boolean
+        nextRunDate:
+          type: string
+          nullable: true
+          pattern: '/^\d{4}-\d{2}-\d{2}$/'
+        id:
+          type: string
+      required:
+        - name
+        - duration
+        - wateringPeriod
+        - startTimes
+        - deviceIds
+        - simultaneousIrrigation
+        - id
+    UpdateIrrigationProgramDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        duration:
+          type: number
+          minimum: 1
+        wateringPeriod:
+          type: number
+          minimum: 1
+        startTimes:
+          type: array
+          items:
+            type: string
+            pattern: >-
+              /^(?:[01]\d|2[0-3]):(?:[0-5]\d)$|^(?:sunset|sunrise)(?:[+-]?\d+)?$/
+        deviceIds:
+          type: array
+          items:
+            type: number
+            minimum: 1
+        simultaneousIrrigation:
+          type: boolean
+        nextRunDate:
+          type: string
+          nullable: true
+          pattern: '/^\d{4}-\d{2}-\d{2}$/'
+    RainDelayDto:
+      type: object
+      properties:
+        resumeWateringAfterDate:
+          type: string
+          nullable: true
+          pattern: '/^\d{4}-\d{2}-\d{2}$/'
+      required:
+        - resumeWateringAfterDate
