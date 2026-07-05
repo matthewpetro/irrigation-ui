@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FullCalendar event state overrides */
+
+.event-warning .fc-event-main {
+  opacity: 0.85;
+}
+
+.event-warning {
+  border-style: dashed !important;
+  border-width: 2px !important;
+}
+
+.event-active {
+  animation: pulse-opacity 2s ease-in-out infinite;
+}
+
+@keyframes pulse-opacity {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.event-no-times {
+  font-style: italic;
+}

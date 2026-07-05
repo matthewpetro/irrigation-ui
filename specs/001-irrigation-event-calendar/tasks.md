@@ -19,13 +19,13 @@
 
 **Purpose**: Initialize the Vite/React/TypeScript project and install all required dependencies.
 
-- [ ] T001 Initialize Vite React TypeScript project in repo root: `npm create vite@latest . -- --template react-ts` and verify `npm run dev` starts
-- [ ] T002 Install and configure Tailwind CSS: `npm install -D tailwindcss postcss autoprefixer`, run `npx tailwindcss init -p`, configure `tailwind.config.ts` content paths, add Tailwind directives to `src/index.css`
-- [ ] T003 [P] Install and configure Vitest with jsdom and React Testing Library: `npm install -D vitest @vitest/ui jsdom @testing-library/react @testing-library/user-event`, create `vitest.config.ts` with jsdom environment, add `"test": "vitest"` script to `package.json`
-- [ ] T004 [P] Install Axios: `npm install axios`, verify import resolves in TypeScript
-- [ ] T005 [P] Install FullCalendar packages: `npm install @fullcalendar/react @fullcalendar/timegrid @fullcalendar/core`
-- [ ] T006 Create `src/env.d.ts` declaring `VITE_API_BASE_URL` on `ImportMetaEnv` and create `.env.example` with `VITE_API_BASE_URL=http://localhost:3000`; add `.env.local` to `.gitignore`
-- [ ] T007 Remove Vite boilerplate: delete `src/App.css`, `src/assets/`, clear `src/App.tsx` and `src/index.css` body content (keep Tailwind directives in `index.css`)
+- [x] T001 Initialize Vite React TypeScript project in repo root: `npm create vite@latest . -- --template react-ts` and verify `npm run dev` starts
+- [x] T002 Install and configure Tailwind CSS: `npm install -D tailwindcss postcss autoprefixer`, run `npx tailwindcss init -p`, configure `tailwind.config.ts` content paths, add Tailwind directives to `src/index.css`
+- [x] T003 [P] Install and configure Vitest with jsdom and React Testing Library: `npm install -D vitest @vitest/ui jsdom @testing-library/react @testing-library/user-event`, create `vitest.config.ts` with jsdom environment, add `"test": "vitest"` script to `package.json`
+- [x] T004 [P] Install Axios: `npm install axios`, verify import resolves in TypeScript
+- [x] T005 [P] Install FullCalendar packages: `npm install @fullcalendar/react @fullcalendar/timegrid @fullcalendar/core`
+- [x] T006 Create `src/env.d.ts` declaring `VITE_API_BASE_URL` on `ImportMetaEnv` and create `.env.example` with `VITE_API_BASE_URL=http://localhost:3000`; add `.env.local` to `.gitignore`
+- [x] T007 Remove Vite boilerplate: delete `src/App.css`, `src/assets/`, clear `src/App.tsx` and `src/index.css` body content (keep Tailwind directives in `index.css`)
 
 **Checkpoint**: `npm run dev` starts; `npm test` runs (zero tests, exits cleanly); Tailwind classes render in browser.
 
@@ -37,17 +37,17 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T008 Define TypeScript types in `src/types/irrigationEvent.ts`: `IrrigationWarning` union type (3 enum string values from API), `IrrigationEventDto` interface (all optional/required fields per API spec), `CalendarEventProps` interface (FullCalendar event shape with extendedProps), `IrrigationEventsQueryParams` interface — see `data-model.md`
-- [ ] T009 [P] Create zone color utility in `src/utils/zoneColors.ts`: define `ZONE_COLOR_PALETTE` (8 colors from `data-model.md`), export `getZoneColor(deviceId: number): string` using `(deviceId - 1) % palette.length`
-- [ ] T010 [P] Write Vitest unit tests in `src/utils/zoneColors.test.ts`: test deterministic color assignment for deviceId 1–8, palette wrap-around for deviceId 9+, and stability (same deviceId always same color)
-- [ ] T011 Create event mapper utility in `src/utils/irrigationEventMapper.ts`: export `toCalendarEvents(dtos: IrrigationEventDto[], viewDate: Date): CalendarEventProps[]` implementing all 5 mapping cases from `data-model.md` (both timestamps, currentlyOn, OFF missing + unknown, ON missing, neither timestamp); timestamps passed through unclipped (actual values from DTO); zone color via `getZoneColor`; classNames set per warning/active state
-- [ ] T012 Write Vitest unit tests in `src/utils/irrigationEventMapper.test.ts`: one test per mapping case from `data-model.md` (both timestamps present, currentlyOn=true, warning OFF+unknown, warning ON missing, neither timestamp); assert `start`/`end`/`allDay`/`classNames`/`backgroundColor` for each case; verify timestamps are NOT clipped to any window boundary
-- [ ] T013 Create shared Axios instance in `src/api/axiosInstance.ts`: `axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000' })`; export as default singleton
-- [ ] T014 Create API client in `src/api/irrigationEventsApi.ts`: export `getEvents(params: IrrigationEventsQueryParams): Promise<IrrigationEventDto[]>` using the shared Axios instance; GET `/irrigation-events` with startTimestamp/endTimestamp query params; return typed array
-- [ ] T015 Write Vitest unit tests in `src/api/irrigationEventsApi.test.ts`: mock Axios instance; assert correct endpoint called with correct params; assert typed response returned; assert error propagated on non-2xx
-- [ ] T016 Create `useIrrigationEvents` hook in `src/hooks/useIrrigationEvents.ts`: accepts `{ start: Date; end: Date }`; returns `{ events: CalendarEventProps[]; loading: boolean; error: string | null }`; calls `getEvents`, maps through `toCalendarEvents`, sets state; re-fetches when start/end change; catches errors and sets error state
-- [ ] T017 Write Vitest unit tests in `src/hooks/useIrrigationEvents.test.ts`: use `renderHook` from `@testing-library/react`; mock `irrigationEventsApi`; test: initial loading=true, success state with mapped events, error state on API failure, re-fetch when date range changes
-- [ ] T018 Run `npm test` and confirm all Vitest tests pass before proceeding
+- [x] T008 Define TypeScript types in `src/types/irrigationEvent.ts`: `IrrigationWarning` union type (3 enum string values from API), `IrrigationEventDto` interface (all optional/required fields per API spec), `CalendarEventProps` interface (FullCalendar event shape with extendedProps), `IrrigationEventsQueryParams` interface — see `data-model.md`
+- [x] T009 [P] Create zone color utility in `src/utils/zoneColors.ts`: define `ZONE_COLOR_PALETTE` (8 colors from `data-model.md`), export `getZoneColor(deviceId: number): string` using `(deviceId - 1) % palette.length`
+- [x] T010 [P] Write Vitest unit tests in `src/utils/zoneColors.test.ts`: test deterministic color assignment for deviceId 1–8, palette wrap-around for deviceId 9+, and stability (same deviceId always same color)
+- [x] T011 Create event mapper utility in `src/utils/irrigationEventMapper.ts`: export `toCalendarEvents(dtos: IrrigationEventDto[], viewDate: Date): CalendarEventProps[]` implementing all 5 mapping cases from `data-model.md` (both timestamps, currentlyOn, OFF missing + unknown, ON missing, neither timestamp); timestamps passed through unclipped (actual values from DTO); zone color via `getZoneColor`; classNames set per warning/active state
+- [x] T012 Write Vitest unit tests in `src/utils/irrigationEventMapper.test.ts`: one test per mapping case from `data-model.md` (both timestamps present, currentlyOn=true, warning OFF+unknown, warning ON missing, neither timestamp); assert `start`/`end`/`allDay`/`classNames`/`backgroundColor` for each case; verify timestamps are NOT clipped to any window boundary
+- [x] T013 Create shared Axios instance in `src/api/axiosInstance.ts`: `axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000' })`; export as default singleton
+- [x] T014 Create API client in `src/api/irrigationEventsApi.ts`: export `getEvents(params: IrrigationEventsQueryParams): Promise<IrrigationEventDto[]>` using the shared Axios instance; GET `/irrigation-events` with startTimestamp/endTimestamp query params; return typed array
+- [x] T015 Write Vitest unit tests in `src/api/irrigationEventsApi.test.ts`: mock Axios instance; assert correct endpoint called with correct params; assert typed response returned; assert error propagated on non-2xx
+- [x] T016 Create `useIrrigationEvents` hook in `src/hooks/useIrrigationEvents.ts`: accepts `{ start: Date; end: Date }`; returns `{ events: CalendarEventProps[]; loading: boolean; error: string | null }`; calls `getEvents`, maps through `toCalendarEvents`, sets state; re-fetches when start/end change; catches errors and sets error state
+- [x] T017 Write Vitest unit tests in `src/hooks/useIrrigationEvents.test.ts`: use `renderHook` from `@testing-library/react`; mock `irrigationEventsApi`; test: initial loading=true, success state with mapped events, error state on API failure, re-fetch when date range changes
+- [x] T018 Run `npm test` and confirm all Vitest tests pass before proceeding
 
 **Checkpoint**: All unit tests pass. The API layer, event mapper, and hook are fully tested and ready for integration.
 
@@ -59,13 +59,13 @@
 
 **Independent Test**: Open the app; navigate to a day with known irrigation activity; confirm events appear as colored time blocks with zone names; confirm prev/next/today controls navigate correctly. Validate quickstart.md scenarios S1–S6, S8–S9.
 
-- [ ] T019 [US1] Create `src/components/IrrigationCalendar.tsx` shell: import FullCalendar with `timeGridPlugin`; configure `initialView="timeGridDay"`, `slotMinTime="00:00:00"`, `slotMaxTime="24:00:00"`, `allDaySlot={true}`, `height="100%"`, `datesSet` callback that extracts `start`/`end` from FullCalendar's `DatesSetArg` and stores them in local state to trigger the data hook
-- [ ] T020 [US1][US3] Add FullCalendar `headerToolbar` in `IrrigationCalendar.tsx`: `left: "prev,next today"`, `center: "title"`, `right: ""` (view switcher added in Phase 4); `titleFormat` set to show single day name + date for day view
-- [ ] T021 [US1] Connect `useIrrigationEvents` hook in `IrrigationCalendar.tsx`: pass `events` array to FullCalendar `events` prop; show a full-width loading banner (`"Loading..."` or spinner) when `loading` is true, positioned above the calendar grid using Tailwind (`relative`/`absolute` overlay or conditional render)
-- [ ] T022 [US1] Configure FullCalendar event display in `IrrigationCalendar.tsx`: use `eventColor` to apply zone color (each event in `CalendarEventProps` carries `backgroundColor`); FullCalendar reads per-event `backgroundColor` and `borderColor` automatically from event objects; verify zone name appears as event title label
-- [ ] T023 [US1] Add CSS for warning and active event visual states in `src/index.css`: `.event-warning` rule adds a dashed white border and reduced opacity; `.event-active` rule adds a subtle pulse animation (`@keyframes pulse`) to indicate zone is currently running; these classes are applied via FullCalendar's `eventClassNames` property using the `classNames` field on `CalendarEventProps`
-- [ ] T024 [US1] Add error display in `IrrigationCalendar.tsx`: when `error` is non-null, render a Tailwind-styled alert banner (red background, white text) above the calendar with the message "Unable to load irrigation data"; grid remains visible below the banner (FR-014)
-- [ ] T025 [US1] Mount `IrrigationCalendar` in `src/App.tsx`: render a full-viewport-height container (`h-screen flex flex-col overflow-hidden`) with `IrrigationCalendar` filling the remaining space; no horizontal overflow on mobile (SC-003)
+- [x] T019 [US1] Create `src/components/IrrigationCalendar.tsx` shell: import FullCalendar with `timeGridPlugin`; configure `initialView="timeGridDay"`, `slotMinTime="00:00:00"`, `slotMaxTime="24:00:00"`, `allDaySlot={true}`, `height="100%"`, `datesSet` callback that extracts `start`/`end` from FullCalendar's `DatesSetArg` and stores them in local state to trigger the data hook
+- [x] T020 [US1][US3] Add FullCalendar `headerToolbar` in `IrrigationCalendar.tsx`: `left: "prev,next today"`, `center: "title"`, `right: ""` (view switcher added in Phase 4); `titleFormat` set to show single day name + date for day view
+- [x] T021 [US1] Connect `useIrrigationEvents` hook in `IrrigationCalendar.tsx`: pass `events` array to FullCalendar `events` prop; show a full-width loading banner (`"Loading..."` or spinner) when `loading` is true, positioned above the calendar grid using Tailwind (`relative`/`absolute` overlay or conditional render)
+- [x] T022 [US1] Configure FullCalendar event display in `IrrigationCalendar.tsx`: use `eventColor` to apply zone color (each event in `CalendarEventProps` carries `backgroundColor`); FullCalendar reads per-event `backgroundColor` and `borderColor` automatically from event objects; verify zone name appears as event title label
+- [x] T023 [US1] Add CSS for warning and active event visual states in `src/index.css`: `.event-warning` rule adds a dashed white border and reduced opacity; `.event-active` rule adds a subtle pulse animation (`@keyframes pulse`) to indicate zone is currently running; these classes are applied via FullCalendar's `eventClassNames` property using the `classNames` field on `CalendarEventProps`
+- [x] T024 [US1] Add error display in `IrrigationCalendar.tsx`: when `error` is non-null, render a Tailwind-styled alert banner (red background, white text) above the calendar with the message "Unable to load irrigation data"; grid remains visible below the banner (FR-014)
+- [x] T025 [US1] Mount `IrrigationCalendar` in `src/App.tsx`: render a full-viewport-height container (`h-screen flex flex-col overflow-hidden`) with `IrrigationCalendar` filling the remaining space; no horizontal overflow on mobile (SC-003)
 - [ ] T026 [US1][US3] Manually validate quickstart.md S1 (default state), S2 (event blocks), S3 (simultaneous zones), S4 (currently active zone), S6 (day navigation), S8 (mobile layout), S9 (API error handling), S10 (empty day), S11 (event spanning query boundary)
 
 **Checkpoint**: Day view fully functional. Events display with correct colors, labels, and warning states. Navigation works. Loading and error states display correctly. Passes all S1–S6, S8–S11 scenarios.
@@ -78,9 +78,9 @@
 
 **Independent Test**: Click the Week button; confirm a 7-column Sun–Sat grid appears with events in correct day columns; click Day to return to the day that was visible before switching. Validate quickstart.md S7 (week view) and S4 (view switching).
 
-- [ ] T027 [US2][US4] Import `timeGridPlugin` already handles both day and week views — confirm `@fullcalendar/timegrid` exposes `timeGridWeek`; no additional package install needed
-- [ ] T028 [US2][US4] Update FullCalendar `headerToolbar` in `IrrigationCalendar.tsx`: add `right: "timeGridDay,timeGridWeek"` to render Day/Week toggle buttons; FullCalendar manages view switching and preserves date context automatically
-- [ ] T029 [US2] Configure week view in `IrrigationCalendar.tsx`: set `firstDay={0}` (Sunday start per spec assumption) and `views={{ timeGridWeek: { titleFormat: { month: 'short', day: 'numeric', year: 'numeric' } } }}` for a readable week range label
+- [x] T027 [US2][US4] Import `timeGridPlugin` already handles both day and week views — confirm `@fullcalendar/timegrid` exposes `timeGridWeek`; no additional package install needed
+- [x] T028 [US2][US4] Update FullCalendar `headerToolbar` in `IrrigationCalendar.tsx`: add `right: "timeGridDay,timeGridWeek"` to render Day/Week toggle buttons; FullCalendar manages view switching and preserves date context automatically
+- [x] T029 [US2] Configure week view in `IrrigationCalendar.tsx`: set `firstDay={0}` (Sunday start per spec assumption) and `views={{ timeGridWeek: { titleFormat: { month: 'short', day: 'numeric', year: 'numeric' } } }}` for a readable week range label
 - [ ] T030 [US4] Verify date context is preserved on view switch: FullCalendar natively preserves the active date when switching between `timeGridDay` and `timeGridWeek`; confirm in browser that clicking Week then Day returns to the same day; if FullCalendar doesn't preserve context automatically, store `activeDate` in state and pass as `initialDate` on re-render
 - [ ] T031 [US2][US4] Manually validate quickstart.md S7 (week view events) and verify view toggle (Day ↔ Week) preserves date context per quickstart.md S4 definition
 
@@ -92,7 +92,7 @@
 
 **Purpose**: Final validation, mobile verification, and any cross-cutting cleanup.
 
-- [ ] T032 [P] Run full Vitest test suite (`npm test`) and confirm all tests still pass after Phase 3 and 4 changes
+- [x] T032 [P] Run full Vitest test suite (`npm test`) and confirm all tests still pass after Phase 3 and 4 changes
 - [ ] T033 [P] Verify mobile layout: open Chrome DevTools → device toolbar → iPhone 14 (390×844); confirm no horizontal scrolling of page chrome; confirm calendar grid scrolls vertically; confirm event labels readable (SC-003)
 - [ ] T034 Run complete quickstart.md validation: execute all scenarios S1–S11 against the running app; document any deviations
 - [ ] T035 [P] Verify zone color consistency: navigate across multiple days and confirm the same zone (`deviceId`) always shows the same color in both day and week views (FR-017, SC-006)
