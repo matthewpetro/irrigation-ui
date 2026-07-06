@@ -69,7 +69,7 @@ Single project, infrastructure-only change: all new files live at the repository
 - [X] T008 [US2] Add a `docker/metadata-action` step to `.github/workflows/docker-publish.yml` computing `latest` and `sha-<shortsha>` tags for `ghcr.io/<owner>/irrigation-ui` (FR-007) (depends on T006)
 - [X] T009 [US2] Add a `docker/login-action` step to `.github/workflows/docker-publish.yml` authenticating to `ghcr.io` with the built-in `GITHUB_TOKEN`, conditioned to run only on the `push` event (FR-009, FR-013) (depends on T006)
 - [X] T010 [US2] Add a `docker/build-push-action` step to `.github/workflows/docker-publish.yml` building from the root `Dockerfile` for `linux/amd64,linux/arm64`, using the tags from T008, with `push` true only on `push`-to-`main` events and false for `pull_request` events (FR-006, FR-008, FR-011, FR-013, FR-014) (depends on T007, T008, T009, and Dockerfile from T002)
-- [ ] T011 [US2] Validate User Story 2 end-to-end per [quickstart.md](./quickstart.md) Step 3 — open a PR (confirm build-only check, no publish), merge to `main` (confirm image published), then intentionally break a throwaway build to confirm the workflow fails visibly and does not publish (FR-008) (depends on T010)
+- [X] T011 [US2] Validate User Story 2 end-to-end per [quickstart.md](./quickstart.md) Step 3 — open a PR (confirm build-only check, no publish), merge to `main` (confirm image published), then intentionally break a throwaway build to confirm the workflow fails visibly and does not publish (FR-008) (depends on T010)
 
 **Checkpoint**: User Stories 1 AND 2 both work independently — pushes to `main` now produce a published, pullable image automatically.
 
@@ -83,7 +83,7 @@ Single project, infrastructure-only change: all new files live at the repository
 
 ### Implementation for User Story 3
 
-- [ ] T012 [P] [US3] Validate User Story 3 per [quickstart.md](./quickstart.md) Step 3, item 3 — confirm the ghcr.io package page lists multiple `sha-<shortsha>` tags, `latest` points at the newest, and the older tag remains pullable (FR-007, FR-010) (depends on T011 having published at least once)
+- [X] T012 [P] [US3] Validate User Story 3 per [quickstart.md](./quickstart.md) Step 3, item 3 — confirm the ghcr.io package page lists multiple `sha-<shortsha>` tags, `latest` points at the newest, and the older tag remains pullable (FR-007, FR-010) (depends on T011 having published at least once)
 
 **Checkpoint**: All three user stories are independently functional — the tagging scheme built in User Story 2 is confirmed traceable and non-destructive over multiple releases.
 
@@ -93,8 +93,8 @@ Single project, infrastructure-only change: all new files live at the repository
 
 **Purpose**: One-time repository setup and final end-to-end verification
 
-- [ ] T013 Set the `irrigation-ui` ghcr.io package visibility to Public (one-time, after the first successful publish from T011), per [quickstart.md](./quickstart.md) Step 4 (FR-012) (depends on T011)
-- [ ] T014 Run the complete [quickstart.md](./quickstart.md) guide end-to-end as final verification that all functional requirements and success criteria (SC-001 through SC-005) are met (depends on T004, T005, T011, T012, T013)
+- [X] T013 Set the `irrigation-ui` ghcr.io package visibility to Public (one-time, after the first successful publish from T011), per [quickstart.md](./quickstart.md) Step 4 (FR-012) (depends on T011)
+- [X] T014 Run the complete [quickstart.md](./quickstart.md) guide end-to-end as final verification that all functional requirements and success criteria (SC-001 through SC-005) are met (depends on T004, T005, T011, T012, T013)
 
 ---
 
