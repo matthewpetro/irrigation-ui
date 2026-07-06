@@ -7,3 +7,4 @@ export default function App() {
     </div>
   )
 }
+this is not valid typescript {{{
