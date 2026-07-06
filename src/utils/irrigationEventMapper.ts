@@ -83,7 +83,7 @@ function toCalendarEvent(dto: IrrigationEventDto, viewDate: Date): CalendarEvent
     id,
     title: dto.title,
     start: dayStart,
-    end: null,
+    end: undefined,
     allDay: true,
     backgroundColor: color,
     borderColor: color,

@@ -16,7 +16,7 @@ export interface CalendarEventProps {
   id: string
   title: string
   start: string | Date
-  end: string | Date | null
+  end: string | Date | undefined
   allDay: boolean
   backgroundColor: string
   borderColor: string

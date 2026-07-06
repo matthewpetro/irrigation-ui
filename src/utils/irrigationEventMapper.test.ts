@@ -94,7 +94,7 @@ describe('toCalendarEvents', () => {
     expect(event.allDay).toBe(true)
     expect(event.classNames).toContain('event-warning')
     expect(event.classNames).toContain('event-no-times')
-    expect(event.end).toBeNull()
+    expect(event.end).toBeUndefined()
   })
 
   it('timestamps are never clipped — start before view boundary is passed through', () => {
